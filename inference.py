@@ -356,6 +356,7 @@ Supported tasks:
     parser.add_argument(
         "--image",
         "--image-path",
+        "--image_path",
         dest="image_path",
         type=str,
         required=True,
