@@ -46,44 +46,103 @@ handling nine facial analysis tasks while maintaining real-time performance at 3
 - [03/19/2024] 🔥 We release <i>FaceXFormer</i>.
 
 ## Installation
+
+### Using pip (recommended)
 ```bash
-conda env create --file environment_facex.yml
+# Clone the repository
+git clone https://github.com/ernestchu/facexformer.git
+cd facexformer
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+### Using conda (optional)
+If you prefer using conda for environment management:
+```bash
+# Create a new conda environment
+conda create -n facexformer python=3.10
 conda activate facexformer
 
-# Install requirements
-pip install torch==2.0.1+cu117 torchvision==0.15.2+cu117 torchaudio==2.0.2+cu117 --extra-index-url https://download.pytorch.org/whl/cu117
+# Install dependencies
+pip install -r requirements.txt
+```
+
+**Note:** PyTorch will be installed automatically. If you need a specific CUDA version, install PyTorch separately first:
+```bash
+# Example for CUDA 11.8
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
 pip install -r requirements.txt
 ```
 ## Download Models
-The models can be downloaded manually from [HuggingFace](https://huggingface.co/kartiknarayan/facexformer) or using python:
-```python
-from huggingface_hub import hf_hub_download
 
+The model weights will be **automatically downloaded** from [HuggingFace](https://huggingface.co/kartiknarayan/facexformer) on first use.
+
+Alternatively, you can download them manually:
+```bash
+# Using Python
+from huggingface_hub import hf_hub_download
 hf_hub_download(repo_id="kartiknarayan/facexformer", filename="ckpts/model.pt", local_dir="./")
 ```
-The directory structure should finally be:
 
-```
-  . ── facexformer ──┌── ckpts/model.pt
-                     ├── network
-                     └── inference.py                    
-```
+Or download directly from the [HuggingFace repository](https://huggingface.co/kartiknarayan/facexformer).
 ## Usage
 
-Download trained model from [HuggingFace](https://huggingface.co/kartiknarayan/facexformer) and ensure the directory structure is correct.<br>
-For demo purposes, we have released the code for inference on a single image.<br>
-It supports a variety of tasks which can be prompted by changing the "task" argument. 
+The model automatically downloads weights from [HuggingFace](https://huggingface.co/kartiknarayan/facexformer) on first use.
 
-```python
-python inference.py --model_path ckpts/model.pt \
-                    --image_path image.png \
-                    --results_path results \
-                    --task parsing \
-                    --gpu_num 0
+### Basic Usage
 
--- task = [parsing, landmarks, headpose, attributes, age_gender_race, visibility]
+```bash
+# Face parsing
+python inference.py --image image.png --task parsing
+
+# Landmark detection
+python inference.py --image image.png --task landmarks
+
+# Head pose estimation
+python inference.py --image image.png --task headpose
+
+# Face attributes
+python inference.py --image image.png --task attributes
+
+# Age, gender, and race estimation
+python inference.py --image image.png --task age_gender_race
+
+# Landmark visibility
+python inference.py --image image.png --task visibility
 ```
-The output is stored in the specified "results_path".
+
+### Advanced Options
+
+```bash
+# Custom output directory
+python inference.py --image image.png --task parsing --output-dir ./my_results
+
+# Use specific model path (skip auto-download)
+python inference.py --image image.png --task parsing --model-path ./ckpts/model.pt
+
+# Use CPU instead of GPU
+python inference.py --image image.png --task parsing --device -1
+
+# Use specific GPU
+python inference.py --image image.png --task parsing --device 1
+```
+
+### Command-line Options
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `--image` | Path to input image (required) | - |
+| `--task` | Task to perform: `parsing`, `landmarks`, `headpose`, `attributes`, `age_gender_race`, `visibility` (required) | - |
+| `--output-dir` | Directory to save results | `./results` |
+| `--model-path` | Path to model weights (downloads if not provided) | Auto-download from HF |
+| `--device` | GPU device number (-1 for CPU) | `0` |
+
+### Getting Help
+
+```bash
+python inference.py --help
+```
 
 <p align="center" width="100%">
   <img src='docs/static/images/qualitative.png'>
