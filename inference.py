@@ -197,7 +197,7 @@ def run_inference(args):
     # Detect face
     print("Detecting face...")
     mtcnn = MTCNN(keep_all=True, device=device)
-    image = Image.open(args.image_path)
+    image = Image.open(args.image_path).convert('RGB')
     width, height = image.size
     boxes, probs = mtcnn.detect(image)
     
