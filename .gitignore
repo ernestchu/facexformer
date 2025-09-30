@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Model weights
+ckpts/
+*.pt
+*.pth
+
+# Results and outputs
+results/
+output/
+outputs/
+
+# OS
+.DS_Store
+Thumbs.db
